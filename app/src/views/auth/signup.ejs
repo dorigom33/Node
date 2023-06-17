@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+
+<body>
+    <h1>회원가입</h1>
+    <form action="/signup" method="POST">
+        <label for="USER_NAME">이름:</label>
+        <input type="text" id="USER_NAME" name="USER_NAME" required>
+        <br>
+
+        <label for="USER_EMAIL">이메일:</label>
+        <input type="email" id="USER_EMAIL" name="USER_EMAIL" required>
+        <br>
+
+        <label for="USER_PW">비밀번호:</label>
+        <input type="password" id="USER_PW" name="USER_PW" required>
+        <br>
+
+        <label for="USER_ADD">주소:</label>
+        <input type="text" id="USER_ADD" name="USER_ADD" required>
+        <br>
+
+        <label for="USER_TEL">전화번호:</label>
+        <input type="text" id="USER_TEL" name="USER_TEL" required>
+        <br>
+
+        <button type="submit">회원가입</button>
+    </form>
+    <p>이미 회원이신가요? <a href="/login">로그인</a></p>
+</body>
+
+</html>
