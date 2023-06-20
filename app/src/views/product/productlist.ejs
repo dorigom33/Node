@@ -1,28 +1,50 @@
-<!-- productlist.ejs -->
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .product-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body>
-  <h1>Product List</h1>
-  <% if (productsList.length === 0) { %>
-    <p>No products found.</p>
-  <% } else { %>
-    <ul>
-      <% productsList.forEach((product) => { %>
-        <li>
-          <h3><%= product.productName %></h3>
-          <p>Price: <%= product.price %></p>
-          <img src="<%= product.imageUrl %>" alt="<%= product.productName %> Image">
-          <p>Upload Date: <%= product.uploadDate %></p>
-          <p>End Date: <%= product.endDate %></p>
-          <p>ProductId: <%= product.productId %></p>
-        </li>
-      <% }); %>
-    </ul>
-  <% } %>
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center mb-4">Product List</h1>
+        <% if (productsList.length === 0) { %>
+          <p class="text-center">No products found.</p>
+        <% } else { %>
+          <div class="row">
+            <% productsList.forEach((product) => { %>
+              <div class="col-md-4 mb-4">
+                <div class="card">
+                  <img src="<%= product.imageUrl %>" class="card-img-top product-image" alt="<%= product.productName %> Image">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <a href="/product/<%= encodeURIComponent(product.productName) %>">
+                        <%= product.productName %>
+                      </a>
+                    </h5>
+                    <p class="card-text">Price: <%= product.price %></p>
+                    <p class="card-text">Upload Date: <%= product.uploadDate %></p>
+                    <p class="card-text">End Date: <%= product.endDate %></p>
+                    <p class="card-text">ProductId: <%= product.productId %></p>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -13,7 +13,9 @@ exports.getMypage = async (req, res) => {
 
       console.log('userInfo:', userInfo);
 
-      res.render('mypage', { user: userInfo });
+      res.render('auth/mypage', { user: userInfo, userName: userName });
+
+      // user와 userName 값을 추가하여 템플릿으로 전달합니다.
     } else {
       res.status(404).json({ message: '해당 사용자를 찾을 수 없습니다.' });
     }

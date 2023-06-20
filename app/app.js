@@ -19,6 +19,7 @@ app.set("views", path.join(__dirname, "src", "views"));
 // 내장 body-parser 미들웨어 설정
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 const secretKey = crypto.randomBytes(32).toString('hex');
 app.use(session({

@@ -27,9 +27,7 @@ router.post('/login', authController.login, (req, res) => {
 router.post('/login/google', authController.loginWithGoogle);
 
 
-router.get('/mypage', (req, res) => {
-  res.render('auth/mypage.ejs');
-});
+router.get('/mypage', mypageController.getMypage);
 
 router.post('/mypage', mypageController.updateMypage);
 

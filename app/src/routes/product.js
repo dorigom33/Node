@@ -25,8 +25,8 @@ router.get('/productlist', async (req, res) => {
 });
 
 // 상품 클릭 시 해당 상품 페이지로 리다이렉션
-router.get('/product/:productId', (req, res) => {
-  res.redirect(`/auction/product/${req.params.productId}`);
+router.get('/product/:productName', (req, res) => {
+  res.redirect(`/auction/product/${req.params.productName}`);
 });
 
 

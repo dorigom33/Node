@@ -1,34 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Auction Product</title>
-  <script>
-    function updateRemainingTime(endTime) {
-      const now = new Date()
-      const remainingTime = endTime - now;
-      const minutes = Math.floor(remainingTime / 1000 / 60 % 60);
-      const seconds = Math.floor(remainingTime / 1000 % 60);
-
-      document.getElementById("timer").innerText = `${minutes}m ${seconds}s`;
-      if (remainingTime <= 0) {
-        clearInterval(timerInterval);
-      }
-    }
-  </script>
+  <meta charset="UTF-8">
+  <title>Auction</title>
 </head>
 <body>
-  <h1><%= product.productName %></h1>
-  <img src="<%= product.imageUrl %>" alt="<%= product.productName %>" />
-  <p>Current bid: <%= product.currentBid %></p>
-  <p>Highest bidder: <%= product.highestBidder %> <span id="timer"></span></p>
-  <form action="/auction/bid/<%= product.id %>/<%= user.id %>" method="POST">
-    <label for="bid">Enter your bid: </label>
-    <input type="number" name="bid" step="0.01" min="<%= product.currentBid %>" />
-    <input type="submit" value="Bid" />
-  </form>
-  <script>
-    const endTime = new Date("<%= product.endTime %>")    
-    const timerInterval = setInterval(() => updateRemainingTime(endTime), 1000);
-  </script>
+  <h1>Auction for <%= product.productName %></h1>
+  <p>Username: <span id="username"><%= username %></span></p>
+  <p>Current highest bid: <span id="highest_bid"><%= product.highestBid %></span></p>
+  <p>Current highest bidder: <span id="highest_bidder"><%= product.highestBidder %></span></p>
+  
+  <h2>Submit your bid</h2>
+  <input id="bidAmount" type="number" min="0" step="0.01" placeholder="Enter your bid amount">
+  <button id="submit_bid_button">Submit bid</button>
+  <script src="/auction.js"></script>
 </body>
 </html>
