@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+</head>
+<body>
+    <h1>마이페이지</h1>
+    <p>안녕하세요, <%= user.USER_NAME %>님</p>
+    
+    <form id="update-form">
+        <label for="USER_NAME">이름</label>
+        <input type="text" name="USER_NAME" id="USER_NAME" value="<%= user.USER_NAME %>" required>
+
+        <label for="USER_ADD">주소</label>
+        <input type="text" name="USER_ADD" id="USER_ADD" value="<%- user.USER_ADD %>" required>
+
+        <label for="USER_TEL">전화번호</label>
+        <input type="text" name="USER_TEL" id="USER_TEL" value="<%= user.USER_TEL %>" required>
+
+        <button type="submit">저장</button>
+    </form>
+
+    <script>
+        // 페이지 수정을 위한 이벤트 리스너 추가
+        document.getElementById("update-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => data[key] = value);
+
+            // 서버와 통신하여 사용자 정보를 업데이트
+            try {
+                const response = await fetch('/mypage', { method: 'PUT', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } });
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(result.message);
+                } else {
+                    alert('사용자 정보 수정에 실패했습니다. 다시 시도해주세요.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('사용자 정보 수정에 실패했습니다. 다시 시도해주세요.');
+            }
+        });
+    </script>
+</body>
+</html>

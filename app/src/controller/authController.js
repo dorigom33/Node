@@ -1,4 +1,4 @@
-const { database } = require('../config/firebase');
+const { database, auth } = require('../config/firebase');
 const firebase = require('firebase/app');
 require('firebase/auth');
 // 회원가입
@@ -7,7 +7,7 @@ exports.signup = async (req, res) => {
     const { USER_NAME, USER_PW, USER_EMAIL, USER_ADD, USER_TEL } = req.body;
 
     // Firebase를 사용하여 회원가입을 처리합니다.
-    const userCredential = await auth.createUserWithEmailAndPassword(USER_EMAIL, USER_PW);
+    const userCredential = await firebase.auth().createUserWithEmailAndPassword(USER_EMAIL, USER_PW);
     const user = userCredential.user;
 
     // 프로필 설정 및 실시간 데이터베이스에 사용자 정보 저장
@@ -19,12 +19,13 @@ exports.signup = async (req, res) => {
       USER_TEL,
     });
 
-    res.status(201).json({ message: '회원가입이 성공적으로 완료되었습니다.' });
+    res.redirect('/login'); // 회원가입이 성공하면 /login으로 리다이렉트
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: '회원가입에 실패했습니다. 다시 시도해주세요.' });
   }
 };
+
 
 // 로그인
 exports.login = async (req, res) => {
@@ -41,9 +42,10 @@ exports.login = async (req, res) => {
       // 암호화된 비밀번호와 입력한 비밀번호를 비교합니다.
       if (USER_PW === userInfo.USER_PW) {
         req.session.userName = userInfo.USER_NAME; // 세션에 userName 추가
+        res.redirect('/main'); // 로그인이 성공하면 /main으로 리다이렉트
       } else {
         res.status(401).json({ message: '비밀번호가 일치하지 않습니다.' });
-      }
+      }  
     } else {
       res.status(404).json({ message: '해당 이메일을 사용하는 사용자를 찾을 수 없습니다.' });
     }

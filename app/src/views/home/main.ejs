@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
+    <style>
+        .user-info {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    여기는 메인
+    <div class="user-info">
+        <p>안녕하세요, <%= userName %>님</p>
+    </div>
+    <button onclick="location.href='/productlist'">상품 목록으로 이동</button>
+    <button onclick="location.href='/mypage'">마이페이지</button>
 </body>
 </html>

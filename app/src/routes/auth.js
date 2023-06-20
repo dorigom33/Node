@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controller/authController');
+const mypageController = require('../controller/mypageController');
 
 router.get('/signup', (req, res) => {
   res.render('auth/signup.ejs');
@@ -11,7 +12,7 @@ router.post('/signup', authController.signup, (req, res) => {
   res.redirect('/login');
 });
 
-// Google 회원가입 관련 라우트는 별도로 렌더링하지 않습니다.
+
 router.post('/signup/google', authController.signupWithGoogle);
 
 router.get('/login', (req, res) => {
@@ -23,7 +24,13 @@ router.post('/login', authController.login, (req, res) => {
   res.redirect('/main');
 });
 
-// Google 로그인 관련 라우트는 별도로 렌더링하지 않습니다.
 router.post('/login/google', authController.loginWithGoogle);
+
+
+router.get('/mypage', (req, res) => {
+  res.render('auth/mypage.ejs');
+});
+
+router.post('/mypage', mypageController.updateMypage);
 
 module.exports = router;
