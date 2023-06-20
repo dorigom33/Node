@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 업로드</title>
+  <!-- 스타일 및 스크립트 추가 공간 -->
+</head>
+<body>
+  <h1>상품 업로드</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <div>
+      <label for="productName">상품명:</label>
+      <input type="text" name="productName" id="productName" required>
+    </div>
+    <div>
+      <label for="price">가격:</label>
+      <input type="number" name="price" id="price" required>
+    </div>
+    <div>
+      <label for="description">상품 설명:</label>
+      <textarea name="description" id="description"></textarea>
+    </div>
+    <div>
+      <label for="category">카테고리:</label>
+      <input type="text" name="category" id="category" required>
+    </div>
+    <div>
+      <label for="image">상품 이미지:</label>
+      <input type="file" name="image" id="image" required>
+    </div>
+    <div>
+      <button type="submit">상품 업로드</button>
+    </div>
+  </form>
+</body>
+</html>

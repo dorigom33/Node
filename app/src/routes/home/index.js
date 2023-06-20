@@ -7,4 +7,6 @@ const ctrl = require("./home.ctrl");
 
 router.get('/', ctrl.hello);
 
+router.get('/main', ctrl.main);
+
 module.exports = router;

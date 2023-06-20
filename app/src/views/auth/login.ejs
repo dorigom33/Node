@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+  <title>로그인</title>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
-
 <body>
     <h1>로그인</h1>
     <form action="/login" method="POST">
@@ -21,6 +20,37 @@
         <button type="submit">로그인</button>
     </form>
     <p>아직 회원이 아니신가요? <a href="/signup">회원가입</a></p>
-</body>
+  <!-- 구글 로그인 버튼 -->
+  <div class="g-signin2" data-onsuccess="onSignin"></div>
 
+  <script>
+    const handleSignin = async (googleUser) => {
+      try {
+        const idToken = googleUser.getAuthResponse().id_token;
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ idToken }),
+        });
+
+        if (response.status === 200) {
+          // 로그인 성공 처리
+          const data = await response.json();
+          console.log(data.message);
+        } else {
+          // 로그인 실패 처리
+          console.error('Google 로그인에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    window.onSignin = (googleUser) => {
+      handleSignin(googleUser);
+    };
+  </script>
+</body>
 </html>

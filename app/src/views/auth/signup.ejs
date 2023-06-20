@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입</title>
+  <title>회원가입</title>
+  <!-- 구글 플랫폼 라이브러리 추가 -->
+  <script src="https://apis.google.com/js/api.js"></script>
+  <!-- 제공된 클라이언트 ID를 사용해 구글 로그인 클라이언트 스크립트 로드 -->
+  <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
-
 <body>
     <h1>회원가입</h1>
     <form action="/signup" method="POST">
@@ -33,6 +34,37 @@
         <button type="submit">회원가입</button>
     </form>
     <p>이미 회원이신가요? <a href="/login">로그인</a></p>
-</body>
+  <!-- 구글 회원가입 버튼 -->
+  <div class="g-signin2" data-onsuccess="onSignup"></div>
 
+  <script>
+    const handleSignup = async (googleUser) => {
+      try {
+        const idToken = googleUser.getAuthResponse().id_token;
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ idToken }),
+        });
+
+        if (response.status === 201) {
+          // 회원가입 성공 처리
+          const data = await response.json();
+          console.log(data.message);
+        } else {
+          // 회원가입 실패 처리
+          console.error('Google 회원가입에 실패했습니다.');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    window.onSignup = (googleUser) => {
+      handleSignup(googleUser);
+    };
+  </script>
+</body>
 </html>
