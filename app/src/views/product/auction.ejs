@@ -1,18 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Auction</title>
+  <title>Auction Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <h1>Auction for <%= product.productName %></h1>
-  <p>Username: <span id="username"><%= username %></span></p>
-  <p>Current highest bid: <span id="highest_bid"><%= product.highestBid %></span></p>
-  <p>Current highest bidder: <span id="highest_bidder"><%= product.highestBidder %></span></p>
-  
-  <h2>Submit your bid</h2>
-  <input id="bidAmount" type="number" min="0" step="0.01" placeholder="Enter your bid amount">
-  <button id="submit_bid_button">Submit bid</button>
-  <script src="/auction.js"></script>
+  <div class="container">
+    <h1 class="text-center my-5">Auction Page</h1>
+
+    <div id="auction-info" class="mb-5">
+      <h2>Auction Information</h2>
+      <p>Product Name: <%= auctionInfo.productName %></p>
+      <p>Current Price: <%= auctionInfo.currentPrice %></p>
+      <p>Highest Bidder: <%= auctionInfo.highestBidder %></p>
+      <p>Status: <%= auctionInfo.status %></p>
+      <p>Start Time: <%= auctionInfo.startTime %></p>
+    </div>
+
+    <div>
+      <h2>Place Bid</h2>
+      <form id="bid-form" action="/auction/<%= auctionId %>/placeBid" method="post" class="my-4">
+        <div class="mb-3">
+          <label for="bid-amount" class="form-label">Bid Amount:</label>
+          <input type="number" id="bid-amount" name="bidAmount" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Place Bid</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const bidForm = document.getElementById("bid-form");
+    bidForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const auctionId = "<%= auctionId %>";
+      const data = new FormData(bidForm);
+      const bidAmount = data.get("bidAmount");
+
+      try {
+        const response = await fetch("/auction/bid/" + auctionId, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bidAmount,
+          }),
+        });
+
+        if (response.status !== 200) {
+          throw new Error("Failed to place bid");
+        }
+
+        window.location.reload();
+      } catch (err) {
+        console.error("Error while placing bid:", err);
+        alert("An error occurred while placing your bid. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>

@@ -25,23 +25,24 @@ const upload = multer({
 });
 
 const addProduct = async (req, res) => {
-  const { productName, price, description, category } = req.body;
+  const { productName, description, category } = req.body;
+  const price = parseFloat(req.body.price);
   const filePath = req.file.path;
   const userName = req.session.userName; // 세션에서 userName 가져오기
-  
+
   try {
     const [file] = await bucket.upload(filePath, {
       public: true,
     });
-  
+
     const imageUrl = file?.metadata?.mediaLink;
     if (!imageUrl) {
       throw new Error('Failed to retrieve image URL');
     }
-  
+
     const endDate = new Date(Date.now() + 72 * 60 * 60 * 1000);
     const uploadDate = new Date();
-  
+
     const newProduct = {
       productName,
       price,
@@ -52,15 +53,17 @@ const addProduct = async (req, res) => {
       uploadDate: uploadDate.toISOString(),
       endDate: endDate.toISOString(),
     };
-  
+
     await db.ref('products').push(newProduct);
-  
-    res.json({ success: 'Image and information saved successfully' });
+
+    // Image and information saved successfully, redirect to /productlist
+    res.redirect('/productlist');
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to upload image and save information' });
   }
 };
+
 
 const getProductsList = async () => {
   const productsRef = db.ref('products');

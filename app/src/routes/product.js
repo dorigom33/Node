@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const productController = require('../controller/productController');
+const auctionController = require('../controller/auctionController'); // 경매 컨트롤러 추가
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -13,7 +14,6 @@ router.get('/upload', (req, res) => {
   res.render('product/upload');
 });
 
-
 router.get('/productlist', async (req, res) => {
   try {
     const productsList = await productController.getProductsList();
@@ -24,12 +24,19 @@ router.get('/productlist', async (req, res) => {
   }
 });
 
-// 상품 클릭 시 해당 상품 페이지로 리다이렉션
-router.get('/product/:productName', (req, res) => {
-  res.redirect(`/auction/product/${req.params.productName}`);
+router.get('/product/:productId/auction', async (req, res) => {
+  const productId = req.params.productId;
+
+  try {
+    // 경매 생성 및 경매 ID 가져오기
+    const auctionId = await auctionController.createAuctionByProductId(productId);
+
+    // 경매 페이지로 리다이렉트
+    res.redirect(`/auction/${auctionId}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create auction' });
+  }
 });
-
-
-
 
 module.exports = router;
